@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IJABO SHAMI Raphael | Elite Web Architecture & Design</title>
+    <style>
+        /* Modern Design System & Variables */
+        :root {
+            --bg-main: #060813;
+            --bg-card: rgba(15, 22, 42, 0.6);
+            --border-glow: rgba(0, 210, 196, 0.15);
+            --accent-cyan: #00d2c4;
+            --accent-blue: #1d70b8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --gradient-text: linear-gradient(135deg, #ffffff 30%, #00d2c4 100%);
+            --gradient-button: linear-gradient(135deg, #00d2c4 0%, #1d70b8 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Background Glows */
+        .ambient-glow-1 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 210, 196, 0.12) 0%, rgba(0,0,0,0) 70%);
+            top: -150px;
+            right: -50px;
+            z-index: -1;
+        }
+
+        .ambient-glow-2 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(29, 112, 184, 0.1) 0%, rgba(0,0,0,0) 70%);
+            bottom: 10%;
+            left: -200px;
+            z-index: -1;
+        }
+
+        /* Navigation Bar */
+        header {
+            background: rgba(6, 8, 19, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 44px;
+            width: auto;
+            border-radius: 6px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 210, 196, 0.4);
+        }
+
+        /* Hero Frame Section */
+        .hero {
+            min-height: 95vh;
+            display: flex;
+            align-items: center;
+            padding: 140px 30px 80px 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 80px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 650px;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-gradient {
+            background: var(--gradient-button);
+            color: #030712;
+            padding: 16px 36px;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 210, 196, 0.25);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(0, 210, 196, 0.45);
+        }
+
+        .btn-outline {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-primary);
+            padding: 16px 36px;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--accent-cyan);
+        }
+
+        .hero-media {
+            position: relative;
+            justify-self: center;
+        }
+
+        /* Glassmorphism framing around your profile picture */
+        .profile-card-frame {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            padding: 16px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            transition: transform 0.4s ease;
+        }
+
+        .profile-card-frame:hover {
+            transform: scale(1.02) rotate(1deg);
+        }
+
+        .hero-img {
+            width: 100%;
+            max-width: 360px;
+            border-radius: 16px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Skills & Features Showcase */
+        .showcase {
+            max-width: 1400px;
+            margin: 100px auto;
+            padding: 0 30px;
+        }
+
+        .section-title {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 35px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent-cyan);
+        }
+
+        .skill-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .skill-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* High-End Pricing Grid Frame */
+        .pricing-section {
+            background: rgba(10, 15, 30, 0.5);
+            border-top: 1px solid rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            padding: 100px 30px;
+        }
+
+        .pricing-wrap {
+            max-width: 580px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, rgba(15, 22, 42, 0.9) 0%, rgba(6, 8, 19, 0.9) 100%);
+            border: 1px solid rgba(0, 210, 196, 0.3);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 210, 196, 0.1);
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-button);
+            color: #000;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 5px 20px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .price-tag {
+            font-size: 5.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 15px 0;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 35px 0;
+            text-align: left;
+            display: inline-block;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .features-list li::before {
+            content: "✦";
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        /* Contact Architecture & Intake Layout */
+        .contact-section {
+            max-width: 1200px;
+            margin: 120px auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 80px;
+        }
+
+        .contact-intro h2 {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        .channels-container {
+            margin-top: 40px;
+        }
+
+        .channel-card {
+            display: block;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 22px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .channel-card:hover {
+            background: rgba(0, 210, 196, 0.03);
+            border-color: var(--accent-cyan);
+        }
+
+        .channel-card span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .channel-card p {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Dynamic Form Element Styling */
+        form {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            padding: 45px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-wrapper {
+            margin-bottom: 25px;
+        }
+
+        .input-wrapper label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .input-wrapper input, .input-wrapper textarea {
+            width: 100%;
+            background: #090d16;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 14px;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-wrapper input:focus, .input-wrapper textarea:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 210, 196, 0.15);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--gradient-button);
+            border: none;
+            padding: 16px;
+            color: #030712;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 20px rgba(0, 210, 196, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 210, 196, 0.4);
+        }
+
+        /* Footer System */
+        footer {
+            text-align: center;
+            padding: 50px 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Layout Optimization */
+        @media (max-width: 1024px) {
+            .hero-grid, .contact-section {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .hero-text {
+                text-align: center;
+            }
+            .hero-text h1 {
+                font-size: 3.5rem;
+            }
+            .hero-text p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .action-group {
+                justify-content: center;
+            }
+            nav ul {
+                display: none; /* Can be turned into hamburger code as needed */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- Main Navigation Architecture -->
+    <header>
+        <div class="nav-container">
+            <a href="#home" class="logo-box">
+                <!-- Embedded Imgur Logo Link -->
+                <img src="https://i.imgur.com/JPgHtmt.jpeg" alt="Pixel Web Design Studio Logo" class="logo-img">
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#capabilities">Capabilities</a></li>
+                    <li><a href="#investment">Investment</a></li>
+                    <li><a href="#connect">Let's Connect</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Interactive Hero Display Frame -->
+    <section class="hero" id="home">
+        <div class="hero-grid">
+            <div class="hero-text">
+                <h1>IJABO SHAMI Raphael</h1>
+                <p>High-End UI/UX Designer & Frontend Engineer building flawless, pixel-perfect web experiences modeled for modern web environments.</p>
+                <div class="action-group">
+                    <a href="#connect" class="btn-gradient">Launch Project</a>
+                    <a href="#capabilities" class="btn-outline">Explore Capabilities</a>
+                </div>
+            </div>
+            <div class="hero-media">
+                <div class="profile-card-frame">
+                    <!-- Embedded Imgur Portrait Link -->
+                    <img src="https://i.imgur.com/ZkAOXQa.jpeg" alt="IJABO SHAMI Raphael Web Designer Portrait" class="hero-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Skills Matrix Showcase -->
+    <section class="showcase" id="capabilities">
+        <div class="section-title">
+            <h2>Engineered For Perfection</h2>
+            <p>Every line of code and user interaction layout is engineered to maximize engagement and execution speeds.</p>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon">✦</div>
+                <h3>Advanced UI / UX Design</h3>
+                <p>Creating beautiful, intuitive, and modern structural interfaces utilizing premium aesthetic patterns that match global corporate tech companies.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">⚡</div>
+                <h3>Absolute Optimization</h3>
+                <p>Optimizing codebases for speed, guaranteeing extreme desktop/mobile responsive fluidities, and maximizing search engine visibility (SEO).</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">⚙️</div>
+                <h3>Interactive Infrastructure</h3>
+                <p>Deploying advanced layout schemes, modern fluid animations, and highly secure web interaction parameters into single, fast web apps.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Direct Premium Flat-Rate Financial Pricing Unit -->
+    <section class="pricing-section" id="investment">
+        <div class="pricing-wrap">
+            <div class="badge">FLAT DESIGN RATE</div>
+            <h3>Premium Web Creation Setup</h3>
+            <div class="price-tag">$200</div>
+            <p style="color: var(--accent-cyan); font-weight: 600; font-size: 0.95rem; letter-spacing: 0.5px;">All-Inclusive Production Scope</p>
+            <ul class="features-list">
+                <li>End-to-End Bespoke Custom Single Page Design</li>
+                <li>Fully Responsive Framework Grid (Mobile, Tablet, PC)</li>
+                <li>Strategic Optimization & Clean Semantics Code</li>
+                <li>Integrated Contact Inbound Form Framework</li>
+                <li>Continuous Workspace Support & Launch Deployment</li>
+            </ul>
+            <a href="#connect" class="btn-gradient" style="display: block; margin-top: 10px;">Reserve Project Workspace</a>
+        </div>
+    </section>
+
+    <!-- High-Converting Contact Module Architecture -->
+    <section class="contact-section" id="connect">
+        <div class="contact-intro">
+            <h2>Let's build a masterpiece.</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px;">Ready to completely elevate your online market value? Use the integrated direct channel options or submit your scope details through the pipeline form immediately.</p>
+            
+            <div class="channels-container">
+                <a href="tel:+250790457115" class="channel-card">
+                    <span>Call / WhatsApp Secure Line</span>
+                    <p>+250 790457115</p>
+                </a>
+                <a href="mailto:ijabo.raphael31@ntare-louisenlund.org" class="channel-card">
+                    <span>Corporate Email Inbox</span>
+                    <p>ijabo.raphael31@ntare-louisenlund.org</p>
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <!-- Functional Interaction Form Layer -->
+            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Message successfully transmitted into simulation space!');">
+                <div class="input-wrapper">
+                    <label for="form-name">Your Full Name or Company Name</label>
+                    <input type="text" id="form-name" required placeholder="Jane Doe">
+                </div>
+                <div class="input-wrapper">
+                    <label for="form-email">Direct Contact Email</label>
+                    <input type="email" id="form-email" required placeholder="jane@company.com">
+                </div>
+                <div class="input-wrapper">
+                    <label for="form-brief">Project Requirements Brief</label>
+                    <textarea id="form-brief" rows="4" required placeholder="Detail what type of custom feature designs or project timelines you require..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Transmit Project Scope Brief</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer Security Wrap -->
+    <footer>
+        <p>&copy; 2026 IJABO SHAMI Raphael. Crafted with maximum visual excellence.</p>
+    </footer>
+
+</body>
+</html>
